@@ -3,17 +3,16 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
-// Load env variables
 dotenv.config();
-
-// Connect to database
 connectDB();
 
 const app = express();
 
-// Middleware
 app.use(cors());
-app.use(express.json()); // Allows us to accept JSON data in the body
+app.use(express.json());
+
+// --- NEW ROUTE INTEGRATION ---
+app.use('/api/users', require('./routes/userRoutes'));
 
 app.get('/', (req, res) => {
     res.send('Multi-Vendor API is running...');
