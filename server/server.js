@@ -13,6 +13,7 @@ app.use(express.json());
 
 // --- NEW ROUTE INTEGRATION ---
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
 
 app.get('/', (req, res) => {
     res.send('Multi-Vendor API is running...');
