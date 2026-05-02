@@ -16,12 +16,13 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
+            // This calls the backend API we built on Day 2!
             const { data } = await axios.post('http://localhost:5000/api/users/login', { email, password });
             setUser(data);
-            localStorage.setItem('userInfo', JSON.stringify(data));
+            localStorage.setItem('userInfo', JSON.stringify(data)); // Save token to browser storage
             return data;
         } catch (error) {
-            throw error.response.data.message;
+            throw error.response?.data?.message || 'Login failed';
         }
     };
 
