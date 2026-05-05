@@ -1,9 +1,11 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+
 
 const Checkout = () => {
     const stripe = useStripe();
@@ -45,17 +47,17 @@ const Checkout = () => {
                 },
             });
 
-            if (payload.error) {
-                setError(`Payment failed: ${payload.error.message}`);
+           if (payload.error) {
+                toast.error(`Payment failed: ${payload.error.message}`); // UPGRADED
                 setProcessing(false);
             } else {
                 // Payment successful!
                 clearCart();
-                alert('Payment Successful! Order Placed.');
-                navigate('/'); // Redirect to home (or an order success page)
+                toast.success('Payment Successful! Order Placed.'); // UPGRADED
+                navigate('/order-success'); // UPGRADED: Redirects to new page
             }
         } catch (err) {
-            setError(err.response?.data?.message || 'An error occurred during checkout');
+            toast.error(err.response?.data?.message || 'An error occurred during checkout'); // UPGRADED
             setProcessing(false);
         }
     };

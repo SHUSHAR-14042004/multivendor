@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const VendorDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -59,7 +60,7 @@ const VendorDashboard = () => {
 
             await axios.post('http://localhost:5000/api/products', formData, config);
             
-            alert('Product added successfully!');
+            toast.success('Product added successfully!')
             // Reset form
             setName(''); setDescription(''); setPrice(''); setStock(''); setImage(null);
             setUploading(false);

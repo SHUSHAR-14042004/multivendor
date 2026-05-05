@@ -74,3 +74,14 @@ const loginUser = async (req, res) => {
 };
 
 module.exports = { registerUser, loginUser };
+
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find({}).select('-password'); // Don't send passwords!
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { registerUser, loginUser, getUsers };
