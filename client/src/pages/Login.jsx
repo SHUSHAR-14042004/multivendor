@@ -12,50 +12,66 @@ const Login = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            await login(email, password);
-            navigate('/'); // Redirect to the home page after successful login
+            // We capture the returned user data from the login function
+            const loggedInUser = await login(email, password); 
+            
+            // Smart Routing based on Role
+            if (loggedInUser.role === 'vendor') {
+                navigate('/vendor-dashboard'); // Send sellers to their dashboard
+            } else if (loggedInUser.role === 'admin') {
+                navigate('/admin-dashboard'); // Send admins to command center
+            } else {
+                navigate('/'); // Send standard customers to the Home page
+            }
+            
         } catch (err) {
             setError(err);
         }
     };
 
-    return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <form onSubmit={submitHandler} className="bg-white p-8 rounded-lg shadow-md w-96">
-                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Marketplace Login</h2>
-                
-                {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <span className="block sm:inline">{error}</span>
-                </div>}
-                
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input 
-                        type="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        className="w-full px-3 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500" 
-                        required 
-                    />
-                </div>
-                
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        className="w-full px-3 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500" 
-                        required 
-                    />
-                </div>
-                
-                <button type="submit" className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
-                    Sign In
-                </button>
-            </form>
-        </div>
-    );
+   return (
+    <div className="flex justify-center items-center h-screen bg-gray-50">
+        {/* Made the card slightly more rounded with softer shadows */}
+        <form onSubmit={submitHandler} className="bg-white p-10 rounded-2xl shadow-sm border border-gray-100 w-96">
+            <h2 className="text-3xl font-extrabold mb-8 text-center text-gray-900 tracking-tight">Welcome Back</h2>
+            
+            {error && <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm">
+                {error}
+            </div>}
+            
+            <div className="mb-5">
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                {/* NEW INPUT STYLING HERE */}
+                <input 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all" 
+                    placeholder="you@example.com"
+                    required 
+                />
+            </div>
+            
+            <div className="mb-8">
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                {/* NEW INPUT STYLING HERE */}
+                <input 
+                    type="password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all" 
+                    placeholder="••••••••"
+                    required 
+                />
+            </div>
+            
+            {/* NEW BUTTON STYLING HERE */}
+            <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+                Sign In
+            </button>
+        </form>
+    </div>
+);
 };
 
 export default Login;

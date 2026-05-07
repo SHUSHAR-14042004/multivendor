@@ -2,14 +2,26 @@ const Product = require('../models/Product');
 
 const createProduct = async (req, res) => {
     try {
-        const { name, description, price, stock } = req.body;
+        // 1. We added 'category' to the list of things to grab from the frontend
+        const { name, description, price, stock, category } = req.body; 
+        
         const imageUrl = req.file ? req.file.path : '';
+        
         const product = await Product.create({
             vendor: req.user._id,
-            name, description, price, stock, imageUrl
+            name, 
+            description, 
+            price, 
+            stock, 
+            imageUrl,
+            // 2. We tell the database to save it (defaulting to Electronics if missing)
+            category: category || 'Electronics' 
         });
+        
         res.status(201).json(product);
-    } catch (error) { res.status(500).json({ message: error.message }); }
+    } catch (error) { 
+        res.status(500).json({ message: error.message }); 
+    }
 };
 
 const getProducts = async (req, res) => {

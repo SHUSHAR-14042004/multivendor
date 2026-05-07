@@ -5,29 +5,34 @@ const ProductCard = ({ product }) => {
     const { addToCart } = useContext(CartContext);
 
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <div className="group bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-1">
+        <div className="overflow-hidden h-56"> {/* Wrapper to hide zooming image */}
             <img 
-                src={product.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image'} 
+                src={product.imageUrl} 
                 alt={product.name} 
-                className="w-full h-48 object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div className="p-5">
-                <h3 className="text-xl font-bold text-gray-800 mb-2 truncate">{product.name}</h3>
-                <p className="text-sm text-gray-500 mb-4 line-clamp-2">{product.description}</p>
-                
-                <div className="flex justify-between items-center mb-4">
-                    <span className="text-2xl font-extrabold text-blue-600">${product.price}</span>
-                </div>
-                
-                <button 
-                    onClick={() => addToCart(product)}
-                    className="w-full bg-blue-800 text-white py-2 rounded hover:bg-blue-700 transition duration-300 font-semibold"
-                >
-                    Add to Cart
-                </button>
-            </div>
         </div>
-    );
+        <div className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">{product.name}</h3>
+            <p className="text-sm text-gray-500 mb-4 line-clamp-2 leading-relaxed">{product.description}</p>
+            
+            <div className="flex justify-between items-end mb-5">
+                <span className="text-2xl font-bold text-gray-900">${product.price}</span>
+                <span className="text-xs font-medium bg-gray-50 text-gray-500 px-3 py-1.5 rounded-full border border-gray-100">
+                    {product.vendor?.name || 'Store'}
+                </span>
+            </div>
+            
+            <button 
+                onClick={() => addToCart(product)}
+                className="w-full bg-gray-900 text-white py-2.5 rounded-xl hover:bg-gray-800 transition-colors duration-200 font-medium active:scale-[0.98]"
+            >
+                Add to Cart
+            </button>
+        </div>
+    </div>
+);
 };
 
 export default ProductCard;
