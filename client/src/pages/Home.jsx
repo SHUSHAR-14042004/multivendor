@@ -17,8 +17,8 @@ const Home = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                // Fetching data from our Node.js backend
-                const { data } = await axios.get('http://localhost:5000/api/products');
+                // FIXED: Using dynamic environment variable for deployment
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
                 setProducts(data);
                 setLoading(false);
             } catch (err) {

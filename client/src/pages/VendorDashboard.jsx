@@ -19,20 +19,21 @@ const VendorDashboard = () => {
 
     // Orders State
     const [orders, setOrders] = useState([]);
-    const [myProducts, setMyProducts] = useState([]); // <-- Make sure this is here!
+    const [myProducts, setMyProducts] = useState([]); 
 
     useEffect(() => {
         if (!user || user.role !== 'vendor') {
             navigate('/'); 
         } else {
             fetchVendorOrders();
-            fetchMyInventory(); // <-- Make sure this is called!
+            fetchMyInventory(); 
         }
     }, [user, navigate]);
 
     const fetchMyInventory = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/products');
+            // FIXED: Dynamic Cloud URL
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
             const vendorInventory = data.filter(product => product.vendor._id === user._id);
             setMyProducts(vendorInventory);
         } catch (error) {
@@ -43,7 +44,8 @@ const VendorDashboard = () => {
     const fetchVendorOrders = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get('http://localhost:5000/api/orders/vendor', config);
+            // FIXED: Dynamic Cloud URL
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders/vendor`, config);
             setOrders(data);
         } catch (error) {
             console.error('Error fetching orders', error);
@@ -70,7 +72,8 @@ const VendorDashboard = () => {
                 },
             };
 
-            await axios.post('http://localhost:5000/api/products', formData, config);
+            // FIXED: Dynamic Cloud URL
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, formData, config);
             
             toast.success('Product published to marketplace successfully!');
             setName(''); setDescription(''); setPrice(''); setStock(''); setImage(null);

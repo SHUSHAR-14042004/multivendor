@@ -6,7 +6,6 @@ import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
-
 const Checkout = () => {
     const stripe = useStripe();
     const elements = useElements();
@@ -34,7 +33,8 @@ const Checkout = () => {
                 },
             };
 
-            const { data } = await axios.post('http://localhost:5000/api/orders', {
+            // FIXED: Using dynamic environment variable for deployment
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/orders`, {
                 orderItems: cartItems,
                 totalPrice: totalPrice,
             }, config);
@@ -48,16 +48,16 @@ const Checkout = () => {
             });
 
            if (payload.error) {
-                toast.error(`Payment failed: ${payload.error.message}`); // UPGRADED
+                toast.error(`Payment failed: ${payload.error.message}`); 
                 setProcessing(false);
             } else {
                 // Payment successful!
                 clearCart();
-                toast.success('Payment Successful! Order Placed.'); // UPGRADED
-                navigate('/order-success'); // UPGRADED: Redirects to new page
+                toast.success('Payment Successful! Order Placed.'); 
+                navigate('/order-success'); 
             }
         } catch (err) {
-            toast.error(err.response?.data?.message || 'An error occurred during checkout'); // UPGRADED
+            toast.error(err.response?.data?.message || 'An error occurred during checkout'); 
             setProcessing(false);
         }
     };

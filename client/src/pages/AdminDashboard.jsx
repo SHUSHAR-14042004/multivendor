@@ -22,7 +22,8 @@ const AdminDashboard = () => {
     const fetchUsers = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get('http://localhost:5000/api/users', config);
+            // FIXED: Using dynamic environment variable for deployment
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`, config);
             setUsers(data);
             setLoading(false);
         } catch (error) {
